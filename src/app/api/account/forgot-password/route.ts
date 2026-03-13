@@ -27,11 +27,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
     const { data, error } = await supabase.auth.admin.generateLink({
       type: 'recovery',
       email: normalizedEmail,
-      options: { redirectTo: siteUrl + '/account/reset-password' },
+      options: { redirectTo: process.env.NEXT_PUBLIC_SITE_URL + '/account/reset-password' },
     });
 
     if (error || !data?.properties?.action_link) {
