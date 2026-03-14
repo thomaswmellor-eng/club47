@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Loader2, Save, X, Sparkles } from 'lucide-react';
+import { Loader2, Save, Sparkles } from 'lucide-react';
 
 interface MissingField {
   key: 'role' | 'company' | 'linkedin' | 'image_url' | 'bio';
@@ -68,25 +68,16 @@ export default function ProfileCompletionModal({ missingFields, accessToken, mem
         </div>
 
         <div className="p-8">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gold-500/10 border border-gold-500/20">
-                <Sparkles size={16} className="text-gold-500" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-widest">
-                  {step + 1} / {total}
-                </p>
-                <h2 className="text-white font-bold text-sm">Complétez votre profil</h2>
-              </div>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-gold-500/10 border border-gold-500/20">
+              <Sparkles size={16} className="text-gold-500" />
             </div>
-            <button
-              onClick={onSkip}
-              className="text-gray-600 hover:text-gray-400 transition-colors p-1"
-              title="Passer pour l'instant"
-            >
-              <X size={16} />
-            </button>
+            <div>
+              <p className="text-xs text-gray-500 uppercase tracking-widest">
+                {step + 1} / {total}
+              </p>
+              <h2 className="text-white font-bold text-sm">Complétez votre profil</h2>
+            </div>
           </div>
 
           <div className="mb-8">
@@ -140,13 +131,7 @@ export default function ProfileCompletionModal({ missingFields, accessToken, mem
             )}
           </div>
 
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleSkipField}
-              className="text-xs text-gray-600 hover:text-gray-400 transition-colors underline underline-offset-2"
-            >
-              Passer ce champ
-            </button>
+          <div className="flex items-center justify-end">
             <button
               onClick={handleNext}
               disabled={saving || !values[current.key].trim()}

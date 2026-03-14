@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Check, X, Clock, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import { ArrowLeft, Check, X, Clock, ChevronDown, ChevronUp, Loader2, CheckSquare, Square } from 'lucide-react';
 
 interface Request {
   id: string;
@@ -43,6 +43,8 @@ export default function RequestsClient({ requests: initial }: { requests: Reques
   const [expanded, setExpanded] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   const [rejectNote, setRejectNote] = useState<Record<string, string>>({});
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [acceptingAll, setAcceptingAll] = useState(false);
 
   const toggle = (id: string) => setExpanded((prev) => (prev === id ? null : id));
 
@@ -82,6 +84,40 @@ export default function RequestsClient({ requests: initial }: { requests: Reques
     }
   };
 
+  const acceptAll = async () => {
+    if (selected.size === 0) return;
+    setAcceptingAll(true);
+    const ids = Array.from(selected);
+    for (const id of ids) {
+      try {
+        const res = await fetch('/api/admin/accept-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ request_id: id }),
+        });
+        if (res.ok) {
+          setRequests((prev) => prev.map((r) => r.id === id ? { ...r, status: 'accepted' } : r));
+        }
+      } catch { /* continue */ }
+    }
+    setSelected(new Set());
+    setAcceptingAll(false);
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = (ids: string[]) => {
+    setSelected((prev) =>
+      ids.every((id) => prev.has(id)) ? new Set() : new Set(ids)
+    );
+  };
+
   const pending = requests.filter((r) => r.status === 'pending');
   const others = requests.filter((r) => r.status !== 'pending');
 
@@ -92,6 +128,14 @@ export default function RequestsClient({ requests: initial }: { requests: Reques
         className="w-full flex items-center justify-between p-5 hover:bg-white/2 transition-colors text-left"
       >
         <div className="flex items-center gap-4">
+          {req.status === 'pending' && (
+            <button
+              onClick={(e) => { e.stopPropagation(); toggleSelect(req.id); }}
+              className="flex-shrink-0 text-gray-500 hover:text-gold-400 transition-colors"
+            >
+              {selected.has(req.id) ? <CheckSquare size={16} className="text-gold-500" /> : <Square size={16} />}
+            </button>
+          )}
           <div>
             <p className="text-white font-medium">{req.proposed_name}</p>
             <p className="text-gray-500 text-xs mt-0.5">{req.proposed_email}</p>
@@ -196,11 +240,34 @@ export default function RequestsClient({ requests: initial }: { requests: Reques
 
         {pending.length > 0 && (
           <div className="mb-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Clock size={16} className="text-yellow-400" />
-              <h2 className="text-white font-bold text-sm uppercase tracking-wider">
-                En attente ({pending.length})
-              </h2>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <Clock size={16} className="text-yellow-400" />
+                <h2 className="text-white font-bold text-sm uppercase tracking-wider">
+                  En attente ({pending.length})
+                </h2>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => toggleSelectAll(pending.map((r) => r.id))}
+                  className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors"
+                >
+                  {pending.every((r) => selected.has(r.id))
+                    ? <CheckSquare size={14} className="text-gold-500" />
+                    : <Square size={14} />}
+                  Tout sélectionner
+                </button>
+                {selected.size > 0 && (
+                  <button
+                    onClick={acceptAll}
+                    disabled={acceptingAll}
+                    className="flex items-center gap-2 px-4 py-2 bg-gold-500 text-black font-bold text-xs uppercase tracking-wider hover:bg-white transition-colors disabled:opacity-50"
+                  >
+                    {acceptingAll ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />}
+                    Accepter ({selected.size})
+                  </button>
+                )}
+              </div>
             </div>
             <div className="space-y-2">
               {pending.map((req) => <RequestCard key={req.id} req={req} />)}

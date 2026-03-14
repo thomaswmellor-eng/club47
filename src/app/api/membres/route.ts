@@ -11,6 +11,7 @@ export async function GET(request: Request) {
     .from('membres')
     .select('id, name, email, role, company, bio, image_url, linkedin, expertise, year_joined')
     .eq('is_active', true)
+    .eq('is_featured', true)
     .order('name');
 
   if (search) {
