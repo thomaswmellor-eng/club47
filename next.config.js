@@ -15,7 +15,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // unsafe-inline requis par Next.js
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: https://images.unsplash.com https://picsum.photos https://media.licdn.com https://ui-avatars.com",
+      "img-src 'self' data: https://images.unsplash.com https://picsum.photos https://*.picsum.photos https://media.licdn.com https://ui-avatars.com",
       "connect-src 'self' https://*.supabase.co", // uniquement vers Supabase
       "frame-ancestors 'none'", // bloque clickjacking
       "form-action 'self'", // les formulaires ne peuvent soumettre qu'en interne
