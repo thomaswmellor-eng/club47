@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Check, X, Clock, ChevronDown, ChevronUp, Loader2, CheckSquare, Square } from 'lucide-react';
 
@@ -38,6 +38,11 @@ const STATUS_COLORS: Record<Request['status'], string> = {
   completed: 'text-gold-500 bg-gold-500/10 border-gold-500/20',
 };
 
+function ordinal(n: number): string {
+  if (n === 1) return '1ère';
+  return `${n}ème`;
+}
+
 export default function RequestsClient({ requests: initial }: { requests: Request[] }) {
   const [requests, setRequests] = useState(initial);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -45,6 +50,21 @@ export default function RequestsClient({ requests: initial }: { requests: Reques
   const [rejectNote, setRejectNote] = useState<Record<string, string>>({});
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [acceptingAll, setAcceptingAll] = useState(false);
+
+  // Compute attempt number per request (sorted by created_at within same email)
+  const attemptMap = React.useMemo(() => {
+    const sorted = [...initial].sort(
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+    const counters: Record<string, number> = {};
+    const map: Record<string, number> = {};
+    for (const r of sorted) {
+      const key = r.proposed_email.toLowerCase();
+      counters[key] = (counters[key] ?? 0) + 1;
+      map[r.id] = counters[key];
+    }
+    return map;
+  }, [initial]);
 
   const toggle = (id: string) => setExpanded((prev) => (prev === id ? null : id));
 
@@ -143,6 +163,11 @@ export default function RequestsClient({ requests: initial }: { requests: Reques
           <span className={`px-2 py-0.5 text-xs border rounded-sm ${STATUS_COLORS[req.status]}`}>
             {STATUS_LABELS[req.status]}
           </span>
+          {attemptMap[req.id] > 1 && (
+            <span className="px-2 py-0.5 text-xs border rounded-sm text-orange-400 bg-orange-400/10 border-orange-400/20">
+              {ordinal(attemptMap[req.id])} demande
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-3 text-gray-500">
           <span className="text-xs hidden sm:block">

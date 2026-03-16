@@ -26,21 +26,6 @@ export async function POST(request: Request) {
 
   const supabase = createServerSupabase();
 
-  // Vérifier qu'il n'y a pas déjà une demande en attente pour cet email
-  const { data: existing } = await supabase
-    .from('member_requests')
-    .select('id')
-    .eq('proposed_email', proposed_email)
-    .in('status', ['pending', 'accepted'])
-    .single();
-
-  if (existing) {
-    return NextResponse.json(
-      { error: 'Une demande est déjà en cours pour cet e-mail.' },
-      { status: 409 }
-    );
-  }
-
   const { error } = await supabase.from('member_requests').insert({
     proposer_membre_id: proposer_membre_id || null,
     proposer_name,
