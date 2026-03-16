@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Aucune demande acceptée trouvée.' }, { status: 404 });
   }
 
-  // Créer le membre
+  // Créer le mem bre
   const { error: insertError } = await supabase.from('membres').insert({
     name: req.proposed_name,
     email: req.proposed_email,
