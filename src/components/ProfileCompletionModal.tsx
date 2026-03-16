@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Loader2, Save, Sparkles } from 'lucide-react';
+import ImageUrlHelpButton from '@/components/ImageUrlHelpButton';
 
 interface MissingField {
   key: 'role' | 'company' | 'linkedin' | 'image_url' | 'bio';
@@ -81,9 +82,12 @@ export default function ProfileCompletionModal({ missingFields, accessToken, mem
           </div>
 
           <div className="mb-8">
-            <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-              {current.label}
-            </label>
+            <div className="flex items-center justify-between mb-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">
+                {current.label}
+              </label>
+              {current.key === 'image_url' && <ImageUrlHelpButton />}
+            </div>
 
             {current.key === 'image_url' ? (
               <div>

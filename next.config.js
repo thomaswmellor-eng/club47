@@ -17,6 +17,7 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https://images.unsplash.com https://picsum.photos https://*.picsum.photos https://media.licdn.com https://ui-avatars.com",
       "connect-src 'self' https://*.supabase.co", // uniquement vers Supabase
+      "frame-src https://customer-mdxgfcqxkyxecmm4.cloudflarestream.com", // vidéo tutoriel
       "frame-ancestors 'none'", // bloque clickjacking
       "form-action 'self'", // les formulaires ne peuvent soumettre qu'en interne
       "upgrade-insecure-requests", // force HTTPS même pour les sous-requêtes

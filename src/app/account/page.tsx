@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2, LogOut, User, Calendar, MapPin, X, Users, Search, Linkedin, Building2, Briefcase, Pencil, Check, Save } from 'lucide-react';
 import { createBrowserSupabase } from '@/lib/supabase-client';
 import ProfileCompletionModal from '@/components/ProfileCompletionModal';
+import ImageUrlHelpButton from '@/components/ImageUrlHelpButton';
 
 interface Membre {
   name: string;
@@ -419,9 +420,12 @@ export default function AccountPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
-                  URL de votre photo <span className="text-gray-600 normal-case font-normal">(optionnel)</span>
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">
+                    URL de votre photo <span className="text-gray-600 normal-case font-normal">(optionnel)</span>
+                  </label>
+                  <ImageUrlHelpButton />
+                </div>
                 <input
                   type="text"
                   value={editForm.image_url}

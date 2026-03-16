@@ -26,6 +26,21 @@ export async function POST(request: Request) {
 
   const supabase = createServerSupabase();
 
+  // Bloquer si le membre existe déjà dans la table membres
+  const { data: existing } = await supabase
+    .from('membres')
+    .select('id')
+    .eq('email', proposed_email.toLowerCase().trim())
+    .eq('is_active', true)
+    .maybeSingle();
+
+  if (existing) {
+    return NextResponse.json(
+      { error: 'Cette personne est déjà membre du Club 47.' },
+      { status: 409 }
+    );
+  }
+
   const { error } = await supabase.from('member_requests').insert({
     proposer_membre_id: proposer_membre_id || null,
     proposer_name,

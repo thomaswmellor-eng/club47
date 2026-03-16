@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
+import ImageUrlHelpButton from '@/components/ImageUrlHelpButton';
 
 export default function BecomeMemberPage() {
   const [step, setStep] = useState<'form' | 'success'>('form');
@@ -188,9 +189,12 @@ export default function BecomeMemberPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
-                URL de votre photo <span className="text-gray-600 normal-case font-normal">(optionnel)</span>
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">
+                  URL de votre photo <span className="text-gray-600 normal-case font-normal">(optionnel)</span>
+                </label>
+                <ImageUrlHelpButton />
+              </div>
               <input
                 name="image_url"
                 value={form.image_url}
