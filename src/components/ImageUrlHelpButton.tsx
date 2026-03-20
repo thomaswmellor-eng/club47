@@ -47,6 +47,11 @@ export default function ImageUrlHelpButton() {
                   allowFullScreen
                 />
               </div>
+              <div className="mt-4 bg-white/5 border border-white/10 px-4 py-3">
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  💡 <span className="text-white font-semibold">Astuce LinkedIn :</span> rendez-vous sur votre profil LinkedIn, faites un <span className="text-gold-400">clic droit sur votre photo de profil</span>, puis cliquez sur <span className="text-gold-400">&quot;Copier l&apos;adresse de l&apos;image&quot;</span> et collez-la ici.
+                </p>
+              </div>
             </div>
           </div>
         </div>
