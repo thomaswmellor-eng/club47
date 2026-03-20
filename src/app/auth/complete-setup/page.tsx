@@ -126,14 +126,22 @@ export default function CompleteSetupPage() {
           <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
             <span className="text-red-400 text-2xl">✕</span>
           </div>
-          <h1 className="font-serif text-2xl text-white mb-3">Lien invalide</h1>
+          <h1 className="font-serif text-2xl text-white mb-3">Lien expiré</h1>
           <p className="text-gray-400 text-sm mb-6">{errorMsg}</p>
-          <button
-            onClick={() => router.push('/')}
-            className="px-8 py-3 bg-gold-500 text-black font-bold text-sm tracking-widest hover:bg-white transition-colors"
-          >
-            RETOUR À L&apos;ACCUEIL
-          </button>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => router.push('/auth/resend-invite')}
+              className="px-8 py-3 bg-gold-500 text-black font-bold text-sm tracking-widest hover:bg-white transition-colors"
+            >
+              RECEVOIR UN NOUVEAU LIEN
+            </button>
+            <button
+              onClick={() => router.push('/')}
+              className="px-8 py-3 border border-white/10 text-gray-400 font-bold text-sm tracking-widest hover:border-white/30 hover:text-white transition-colors"
+            >
+              RETOUR À L&apos;ACCUEIL
+            </button>
+          </div>
         </div>
       </div>
     );

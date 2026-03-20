@@ -177,6 +177,7 @@ export async function sendWelcomeEmail({
 
         <p style="color:#555;font-size:12px;margin-top:40px;border-top:1px solid #2a2a2a;padding-top:20px;line-height:1.6;">
           Ce lien est valable 24 heures.<br>
+          Lien expiré ? <a href="${process.env.NEXT_PUBLIC_SITE_URL}/auth/resend-invite" style="color:#c9a84c;text-decoration:underline;">Cliquez ici pour en recevoir un nouveau</a>.<br>
           Si vous n'avez pas demandé cet accès, ignorez simplement cet e-mail.
         </p>
       </div>
