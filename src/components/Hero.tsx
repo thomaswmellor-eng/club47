@@ -22,7 +22,7 @@ const Hero: React.FC = () => {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <div className="mb-6 inline-block">
           <span className="border border-gold-500/50 text-gold-300 px-4 py-1 text-xs md:text-sm tracking-[0.2em] uppercase bg-black/30 backdrop-blur-sm">
-            Le Cercle de l&apos;Élite Digital & Marketing
+            Le cercle des directeurs marketing
           </span>
         </div>
 
